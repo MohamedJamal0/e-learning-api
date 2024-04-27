@@ -19,7 +19,7 @@
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://e-learning-dun-nine.vercel.app"
+          "value": "*"
         },
         {
           "key": "Access-Control-Allow-Methods",
