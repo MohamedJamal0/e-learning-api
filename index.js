@@ -18,7 +18,7 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 app.use(express.json());
 app.use(
   cors({
-    origin: 'https://e-learning-dun-nine.vercel.app/',
+    origin: 'https://e-learning-dun-nine.vercel.app',
     credentials: true,
   })
 );
