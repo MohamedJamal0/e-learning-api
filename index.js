@@ -5,10 +5,6 @@ require('express-async-errors');
 const express = require('express');
 const app = express();
 
-const multer = require('multer');
-
-const storage = multer.memoryStorage();
-
 const cookieParser = require('cookie-parser');
 
 const connectDB = require('./db/connect');
@@ -22,7 +18,7 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 app.use(express.json());
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://e-learning-dun-nine.vercel.app/',
     credentials: true,
   })
 );
