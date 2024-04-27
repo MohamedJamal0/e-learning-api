@@ -1,4 +1,4 @@
-const { Course, CoursePurchase } = require('../../models');
+const { Course, CoursePurchase, StudentCourse } = require('../../models');
 const { BadRequestError, NotFoundError } = require('../../errors');
 
 const getCourses = async () => {
