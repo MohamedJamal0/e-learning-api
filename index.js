@@ -11,11 +11,16 @@ const connectDB = require('./db/connect');
 
 const cors = require('cors');
 
+const passport = require('passport');
+
+require('./config/passport')(passport);
+
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
 app.use(express.json());
+
 app.use(
   cors({
     origin: 'https://e-learning-dun-nine.vercel.app',
@@ -23,6 +28,7 @@ app.use(
   })
 );
 
+app.use(passport.initialize());
 app.use(cookieParser());
 
 // routes

@@ -26,6 +26,8 @@ const signup = async (req, res) => {
 
   res.cookie('token', token, {
     httpOnly: true,
+    secure: true,
+    sameSite: 'none',
   });
 
   res.status(201).json({
@@ -53,6 +55,8 @@ const studentLogin = async (req, res, next) => {
 
   res.cookie('token', token, {
     httpOnly: true,
+    secure: true,
+    sameSite: 'none',
   });
 
   res.status(200).json({
@@ -87,8 +91,8 @@ const adminLogin = async (req, res, next) => {
 };
 
 const logout = (req, res) => {
-  res.clearCookie('token');
-  res.status(200).json({ success: true });
+  res.clearCookie('token', { path: '/' });
+  res.status(200).json({ message: 'Logged out successfully' });
 };
 
 const getCurrentUser = async (req, res, next) => {
@@ -115,10 +119,46 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
+const googleCallback = async (req, res) => {
+  const user = {
+    firstName: req.user.displayName,
+    lastName: req.user.name.familyName,
+    email: req.user.emails[0].value,
+  };
+  const student = await Student.findOne({ email: user.email });
+
+  if (!student) {
+    const newStudent = await Student.create(user);
+    const token = generateToken({
+      id: newStudent._id,
+      role: 'student',
+    });
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
+  } else {
+    const token = generateToken({
+      id: student._id,
+      role: 'student',
+    });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
+  }
+
+  res.redirect('https://e-learning-dun-nine.vercel.app/');
+};
+
 module.exports = {
   signup,
   studentLogin,
   adminLogin,
   logout,
   getCurrentUser,
+  googleCallback,
 };

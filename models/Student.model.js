@@ -18,6 +18,7 @@ const studentSchema = new mongoose.Schema({
 });
 
 studentSchema.pre('save', async function (next) {
+  if (!this.password) next();
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(this.password, salt);
 

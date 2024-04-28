@@ -6,6 +6,8 @@ const { authValidator } = require('../validations');
 const authController = require('./auth.controller');
 const { cookieJwtAuth } = require('../middleware/auth');
 
+const passport = require('passport');
+
 router.post(
   '/signup',
   validator(authValidator.studentSignupSchema),
@@ -26,5 +28,18 @@ router.post(
 
 router.get('/logout', authController.logout);
 router.get('/current', cookieJwtAuth, authController.getCurrentUser);
+
+router.get(
+  '/login/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+router.get(
+  '/googleRedirect',
+  passport.authenticate('google', {
+    session: false,
+  }),
+  authController.googleCallback
+);
 
 module.exports = router;
