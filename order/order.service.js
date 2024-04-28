@@ -4,7 +4,7 @@ const courseStudentService = require('../course/student/course.student.service')
 const paypalService = require('./paypal.service');
 
 const createOrder = async (courseId) => {
-  const course = await Course.findOne({ id: courseId });
+  const course = await Course.findById(courseId);
 
   if (!course) throw new NotFoundError('Course not found');
 
@@ -38,7 +38,7 @@ const captureOrder = async ({ user, orderID, courseId }) => {
   return { jsonResponse, httpStatusCode };
 };
 
-module.export = {
+module.exports = {
   createOrder,
   captureOrder,
 };
