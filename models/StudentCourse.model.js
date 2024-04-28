@@ -16,6 +16,10 @@ const studentCourseSchema = new mongoose.Schema(
         ref: 'Lecture',
       },
     ],
+    completionPercentage: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

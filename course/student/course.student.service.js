@@ -1,8 +1,10 @@
-const { Course, StudentCourse } = require('../../models');
+const { Course, StudentCourse, Lecture, Student } = require('../../models');
 const { NotFoundError } = require('../../errors');
+const { default: mongoose } = require('mongoose');
+
 const getCourses = async () => {
   const courses = await Course.find({ isPublished: true }).select(
-    'id title subtitle coverImage price isFree level'
+    'id title subtitle coverImage price isFree level numberOfLectures'
   );
 
   return courses;
@@ -142,20 +144,60 @@ const toggleLectureCompletion = async (user, courseId, lectureId) => {
 
   if (!isCompleted) courseStudent.completedLectures.push(lectureId);
 
+  const numberOfCourseLectures = await Lecture.countDocuments({
+    course: courseId,
+    isPublished: true,
+  });
+
+  const numberOfCompletedLectures = courseStudent.completedLectures.length;
+
+  courseStudent.completionPercentage = Math.round(
+    (numberOfCompletedLectures / numberOfCourseLectures) * 100
+  );
+
   await courseStudent.save();
 
   return { message: 'updated successfully' };
 };
 
 const getStudentCourses = async (user) => {
-  const myCourses = await StudentCourse.find({
-    student: user.id,
-  })
-    .select('course')
-    .populate('course', 'title coverImage');
+  const courses = await StudentCourse.aggregate([
+    { $match: { student: new mongoose.Types.ObjectId(user.id) } },
+    {
+      $lookup: {
+        from: 'courses',
+        localField: 'course',
+        foreignField: '_id',
+        as: 'courseDetails',
+      },
+    },
+    {
+      $unwind: '$courseDetails',
+    },
+    {
+      $lookup: {
+        from: 'lectures',
+        let: { courseId: '$course' },
+        pipeline: [
+          { $match: { $expr: { $eq: ['$course', '$$courseId'] } } },
+          { $sort: { order: 1 } },
+          { $limit: 1 },
+        ],
+        as: 'firstLecture',
+      },
+    },
+    {
+      $project: {
+        id: '$course',
+        title: '$courseDetails.title',
+        firstLectureId: { $arrayElemAt: ['$firstLecture._id', 0] },
+        completionPercentage: '$completionPercentage',
+        coverImage: '$courseDetails.coverImage',
+      },
+    },
+  ]);
 
-  const _myCourses = myCourses.map((course) => course.course);
-  return _myCourses;
+  return courses;
 };
 
 module.exports = {
