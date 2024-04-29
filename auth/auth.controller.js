@@ -138,7 +138,7 @@ const googleCallback = async (req, res) => {
 
   attachTokenToCookies(res, token);
 
-  res.redirect('https://e-learning-dun-nine.vercel.app/');
+  res.redirect(process.env.CLIENT_URL);
 };
 
 module.exports = {

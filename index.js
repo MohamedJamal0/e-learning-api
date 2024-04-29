@@ -23,7 +23,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: 'https://e-learning-dun-nine.vercel.app',
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
