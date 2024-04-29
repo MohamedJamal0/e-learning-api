@@ -1,7 +1,7 @@
 const { BadRequestError } = require('../errors');
 const { Student, Admin } = require('../models');
 
-const { generateToken } = require('../jwt');
+const { generateToken, attachTokenToCookies } = require('../jwt');
 const bcrypt = require('bcrypt');
 
 const signup = async (req, res) => {
@@ -24,11 +24,7 @@ const signup = async (req, res) => {
     role: 'student',
   });
 
-  res.cookie('token', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-  });
+  attachTokenToCookies(res, token);
 
   res.status(201).json({
     id: student._id,
@@ -53,11 +49,7 @@ const studentLogin = async (req, res, next) => {
     role: 'student',
   });
 
-  res.cookie('token', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-  });
+  attachTokenToCookies(res, token);
 
   res.status(200).json({
     id: student._id,
@@ -80,9 +72,7 @@ const adminLogin = async (req, res, next) => {
     role: 'admin',
   });
 
-  res.cookie('token', token, {
-    httpOnly: true,
-  });
+  attachTokenToCookies(res, token);
 
   res.status(200).json({
     id: admin._id,
@@ -126,30 +116,22 @@ const googleCallback = async (req, res) => {
     email: req.user.emails[0].value,
   };
   const student = await Student.findOne({ email: user.email });
+  let token;
 
   if (!student) {
     const newStudent = await Student.create(user);
-    const token = generateToken({
+    token = generateToken({
       id: newStudent._id,
       role: 'student',
     });
-
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    });
   } else {
-    const token = generateToken({
+    token = generateToken({
       id: student._id,
       role: 'student',
     });
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    });
   }
+
+  attachTokenToCookies(res, token);
 
   res.redirect('https://e-learning-dun-nine.vercel.app/');
 };
