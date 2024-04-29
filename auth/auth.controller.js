@@ -83,7 +83,7 @@ const adminLogin = async (req, res, next) => {
 const logout = (req, res) => {
   res.cookie('token', '', {
     httpOnly: true,
-    expires: new Date(0),
+    maxAge: 0,
     sameSite: 'none',
     secure: true,
   });
