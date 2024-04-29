@@ -48,27 +48,34 @@ const updateChapter = async (id, chapter) => {
 };
 
 const deleteChapter = async (chapterId) => {
+  const session = await Chapter.startSession();
+
   const chapter = await Chapter.findById(chapterId);
 
   if (!chapter) throw new NotFoundError("Chapter doesn't exist");
 
-  const course = await Course.findById(chapter.course);
+  await session.withTransaction(async () => {
+    await Chapter.updateMany(
+      {
+        course: chapter.course,
+        order: { $gt: chapter.order },
+      },
+      { $inc: { order: -1 } }
+    )
+      .session(session)
+      .exec();
 
-  course.chapters = course.chapters.filter(
-    (chapter) => chapter?.toString() !== chapterId
-  );
+    await Course.updateOne(
+      { _id: chapter.course },
+      { $pull: { chapters: chapter._id } }
+    )
+      .session(session)
+      .exec();
 
-  const deletedChapter = await Chapter.findById(chapterId);
-  await Chapter.updateMany(
-    {
-      course: course._id,
-      order: { $gt: deletedChapter.order },
-    },
-    { $inc: { order: -1 } }
-  );
+    await Chapter.deleteOne({ _id: chapterId }).session(session).exec();
+  });
 
-  await Chapter.deleteOne({ _id: chapterId });
-  await course.save();
+  session.endSession();
 };
 
 const updateChapterOrder = async (chapterId, newOrder) => {

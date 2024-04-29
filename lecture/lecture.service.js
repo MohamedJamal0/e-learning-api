@@ -51,24 +51,34 @@ const updateLecture = async (id, lecture) => {
 };
 
 const deleteLecture = async (id) => {
-  const deletedLecture = await Lecture.findById(id);
+  const session = await Lecture.startSession();
 
-  const chapter = await Chapter.findById(deletedLecture.chapter);
+  const lecture = await Lecture.findById(id);
 
-  await Lecture.updateMany(
-    {
-      chapter: chapter._id,
-      order: { $gt: deletedLecture.order },
-    },
-    { $inc: { order: -1 } }
-  );
+  if (!lecture) throw new NotFoundError('Lecture not found');
 
-  chapter.lectures = chapter.lectures.filter(
-    (lecture) => lecture?.toString() !== id
-  );
+  await session.withTransaction(async () => {
+    await Lecture.updateMany(
+      {
+        chapter: lecture.chapter,
+        order: { $gt: lecture.order },
+      },
+      { $inc: { order: -1 } }
+    )
+      .session(session)
+      .exec();
 
-  await Lecture.findOneAndDelete({ _id: id });
-  await chapter.save();
+    await Chapter.updateOne(
+      { _id: lecture.chapter },
+      { $pull: { lectures: lecture._id } }
+    )
+      .session(session)
+      .exec();
+
+    await Lecture.findOneAndDelete({ _id: id }).session(session).exec();
+  });
+
+  session.endSession();
 };
 
 const getLectureContent = async (user, id) => {
