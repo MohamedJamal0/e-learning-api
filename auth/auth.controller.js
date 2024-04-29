@@ -81,7 +81,12 @@ const adminLogin = async (req, res, next) => {
 };
 
 const logout = (req, res) => {
-  res.clearCookie('token', { path: '/' });
+  res.cookie('token', '', {
+    httpOnly: true,
+    expires: new Date(0),
+    sameSite: 'none',
+    secure: true,
+  });
   res.status(200).json({ message: 'Logged out successfully' });
 };
 
