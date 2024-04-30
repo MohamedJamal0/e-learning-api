@@ -6,35 +6,56 @@ const lectureController = require('./lecture.controller');
 const validator = require('../middleware/validator');
 const { lectureValidator } = require('../validations');
 
-const auth = require('../middleware/auth');
+const {
+  isAdmin,
+  cookieJwtAuth,
+  isSuperAdmin,
+  cookieJwtGetUser,
+} = require('../middleware/auth');
 
-router.get('/', lectureController.getLectures);
+router.get('/', cookieJwtAuth, isAdmin, lectureController.getLectures);
 
 router.post(
   '/',
   validator(lectureValidator.createLectureSchema),
+  cookieJwtAuth,
+  isAdmin,
   lectureController.createLecture
 );
 
 router.patch(
   '/:id',
   validator(lectureValidator.updateLectureSchema),
+  cookieJwtAuth,
+  isAdmin,
   lectureController.updateLecture
 );
 
-router.delete('/:id', lectureController.deleteLecture);
+router.delete(
+  '/:id',
+  cookieJwtAuth,
+  isSuperAdmin,
+  lectureController.deleteLecture
+);
 
 router.patch(
   '/:id/update_order',
   validator(lectureValidator.updateLectureOrderSchema),
+  cookieJwtAuth,
+  isAdmin,
   lectureController.updateLectureOrder
 );
 
-router.patch('/:id/publish', lectureController.publishLecture);
+router.patch(
+  '/:id/publish',
+  cookieJwtAuth,
+  isAdmin,
+  lectureController.publishLecture
+);
 
 router.get(
   '/:id/content',
-  auth.cookieJwtGetUser,
+  cookieJwtGetUser,
   lectureController.getLectureContent
 );
 

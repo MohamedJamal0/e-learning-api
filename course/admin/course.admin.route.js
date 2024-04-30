@@ -3,30 +3,68 @@ const router = express.Router();
 
 const courseAdminController = require('./course.admin.controller');
 
+const {
+  cookieJwtAuth,
+  isAdmin,
+  isSuperAdmin,
+} = require('../../middleware/auth');
+
 const validator = require('../../middleware/validator');
 const courseValidator = require('../../validations/course.validator');
 
-router.get('/purchases', courseAdminController.getAllPurchases);
+router.get(
+  '/purchases',
+  cookieJwtAuth,
+  isAdmin,
+  courseAdminController.getAllPurchases
+);
 
-router.get('/analytics', courseAdminController.getAnalytics);
+router.get(
+  '/analytics',
+  cookieJwtAuth,
+  isAdmin,
+  courseAdminController.getAnalytics
+);
 
-router.get('/last-joined', courseAdminController.getLastJoinedStudents);
+router.get(
+  '/last-joined',
+  cookieJwtAuth,
+  isAdmin,
+  courseAdminController.getLastJoinedStudents
+);
 
-router.get('/', courseAdminController.getCourses);
-router.get('/:id', courseAdminController.getCourse);
+router.get('/', cookieJwtAuth, isAdmin, courseAdminController.getCourses);
+router.get('/:id', cookieJwtAuth, isAdmin, courseAdminController.getCourse);
 
-router.post('/', courseAdminController.createCourse);
+router.post('/', cookieJwtAuth, isAdmin, courseAdminController.createCourse);
 
 router.patch(
   '/:id',
+  cookieJwtAuth,
+  isAdmin,
   validator(courseValidator.updateCourseSchema),
   courseAdminController.updateCourse
 );
 
-router.delete('/:id', courseAdminController.deleteCourse);
+router.delete(
+  '/:id',
+  cookieJwtAuth,
+  isSuperAdmin,
+  courseAdminController.deleteCourse
+);
 
-router.patch('/:id/publish', courseAdminController.togglePublishCourse);
+router.patch(
+  '/:id/publish',
+  cookieJwtAuth,
+  isSuperAdmin,
+  courseAdminController.togglePublishCourse
+);
 
-router.get('/:id/is-published', courseAdminController.isCoursePublished);
+router.get(
+  '/:id/is-published',
+  cookieJwtAuth,
+  isAdmin,
+  courseAdminController.isCoursePublished
+);
 
 module.exports = router;
