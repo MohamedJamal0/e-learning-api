@@ -3,31 +3,45 @@ const router = express.Router();
 const validator = require('../middleware/validator');
 const { authValidator } = require('../validations');
 
-const authController = require('./auth.controller');
-const { cookieJwtAuth } = require('../middleware/auth');
+const {
+  studentLogin,
+  studentSignup,
+  googleCallback,
+} = require('./auth.student.controller');
+
+const { adminLogin, createAdmin } = require('./auth.admin.controller');
+
+const { logout, getCurrentUser } = require('./auth.controller');
+
+const { cookieJwtAuth, isSuperAdmin } = require('../middleware/auth');
 
 const passport = require('passport');
 
 router.post(
   '/signup',
   validator(authValidator.studentSignupSchema),
-  authController.signup
+  studentSignup
 );
 
 router.post(
   '/login',
   validator(authValidator.studentLoginSchema),
-  authController.studentLogin
+  studentLogin
 );
 
 router.post(
   '/admin/login',
   validator(authValidator.adminLoginSchema),
-  authController.adminLogin
+  adminLogin
 );
 
-router.get('/logout', authController.logout);
-router.get('/current', cookieJwtAuth, authController.getCurrentUser);
+router.post(
+  '/admin/create',
+  validator(authValidator.createAdminSchema),
+  cookieJwtAuth,
+  isSuperAdmin,
+  createAdmin
+);
 
 router.get(
   '/login/google',
@@ -39,7 +53,11 @@ router.get(
   passport.authenticate('google', {
     session: false,
   }),
-  authController.googleCallback
+  googleCallback
 );
+
+router.get('/logout', logout);
+
+router.get('/current', cookieJwtAuth, getCurrentUser);
 
 module.exports = router;

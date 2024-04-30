@@ -5,12 +5,17 @@ const adminSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  password: {
+    type: String,
+  },
   email: {
     type: String,
     unique: true,
   },
-  password: {
+  role: {
     type: String,
+    enum: ['superadmin', 'admin'],
+    default: 'admin',
   },
 });
 
