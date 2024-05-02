@@ -163,7 +163,7 @@ const getAnalytics = async () => {
     numberOfCourses,
     numberOfPurchases,
     numberOfStudents,
-    totalIncome: totalIncome[0].total,
+    totalIncome: totalIncome[0]?.total || 0,
   };
 };
 
