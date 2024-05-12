@@ -1,24 +1,28 @@
 require('dotenv').config();
-
 require('express-async-errors');
 
 const express = require('express');
 const app = express();
 
-const cookieParser = require('cookie-parser');
-
 const connectDB = require('./db/connect');
 
+const cookieParser = require('cookie-parser');
+
 const cors = require('cors');
+const rateLimiter = require('express-rate-limit');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const mongoSanitize = require('express-mongo-sanitize');
 
+// passport
 const passport = require('passport');
-
 require('./config/passport')(passport);
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
+// extra packages
 app.use(express.json());
 
 app.use(
@@ -28,6 +32,18 @@ app.use(
   })
 );
 
+app.use(
+  rateLimiter({
+    windowMs: 15 * 60 * 1000,
+    max: 60,
+  })
+);
+
+app.use(helmet());
+app.use(xss());
+app.use(mongoSanitize());
+
+// passport middleware
 app.use(passport.initialize());
 app.use(cookieParser());
 
@@ -40,12 +56,12 @@ const authRoute = require('./auth/auth.route');
 const courseStudentRoute = require('./course/student/course.student.route');
 const orderRoute = require('./order/order.route');
 
-app.use('/v1/admin/courses', courseAdminRoute);
-app.use('/v1/admin/chapters', chapterRoute);
-app.use('/v1/admin/lectures', lectureRoute);
-app.use('/v1/auth', authRoute);
-app.use('/v1/courses', courseStudentRoute);
-app.use('/v1/orders', orderRoute);
+app.use('/api/v1/admin/courses', courseAdminRoute);
+app.use('/api/v1/admin/chapters', chapterRoute);
+app.use('/api/v1/admin/lectures', lectureRoute);
+app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/courses', courseStudentRoute);
+app.use('/api/v1/orders', orderRoute);
 
 // errors
 app.use(notFoundMiddleware);
