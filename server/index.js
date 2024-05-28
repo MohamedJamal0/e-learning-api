@@ -16,7 +16,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 
 // passport
 const passport = require('passport');
-require('./config/passport')(passport);
+require('./lib/passport')(passport);
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
@@ -49,12 +49,12 @@ app.use(cookieParser());
 
 // routes
 
-const courseAdminRoute = require('./course/admin/course.admin.route');
-const chapterRoute = require('./chapter/chapter.route');
-const lectureRoute = require('./lecture/lecture.route');
-const authRoute = require('./auth/auth.route');
-const courseStudentRoute = require('./course/student/course.student.route');
-const orderRoute = require('./order/order.route');
+const courseAdminRoute = require('./api/course/admin/course.admin.route');
+const chapterRoute = require('./api/chapter/chapter.route');
+const lectureRoute = require('./api/lecture/lecture.route');
+const authRoute = require('./api/auth/auth.route');
+const courseStudentRoute = require('./api/course/student/course.student.route');
+const orderRoute = require('./api/order/order.route');
 
 app.use('/api/v1/admin/courses', courseAdminRoute);
 app.use('/api/v1/admin/chapters', chapterRoute);

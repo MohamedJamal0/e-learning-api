@@ -1,7 +1,7 @@
-const { BadRequestError } = require('../errors');
-const { Admin } = require('../models');
+const { BadRequestError } = require('../../errors');
+const { Admin } = require('../../models');
 
-const { generateToken, attachTokenToCookies } = require('../jwt');
+const { generateToken, attachTokenToCookies } = require('../../lib/jwt');
 const bcrypt = require('bcrypt');
 
 const adminLogin = async (req, res, next) => {

@@ -1,5 +1,5 @@
-const { Chapter, Course } = require('../models');
-const { NotFoundError } = require('../errors');
+const { Chapter, Course } = require('../../models');
+const { NotFoundError } = require('../../errors');
 
 const getChapters = async (courseId) => {
   const course = await Course.findById(courseId);

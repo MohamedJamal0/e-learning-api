@@ -1,6 +1,6 @@
-const { Lecture, Chapter, Course } = require('../models');
+const { Lecture, Chapter, Course } = require('../../models');
 const courseStudentService = require('../course/student/course.student.service');
-const { NotFoundError } = require('../errors');
+const { NotFoundError } = require('../../errors');
 
 const getLectures = async (courseId) => {
   const course = await Course.findById(courseId);

@@ -1,5 +1,5 @@
-const { Course, CoursePurchase } = require('../models');
-const { NotFoundError } = require('../errors');
+const { Course, CoursePurchase } = require('../../models');
+const { NotFoundError } = require('../../errors');
 const courseStudentService = require('../course/student/course.student.service');
 const paypalService = require('./paypal.service');
 

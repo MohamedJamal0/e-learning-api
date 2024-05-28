@@ -1,4 +1,4 @@
-const { Student, Admin } = require('../models');
+const { Student, Admin } = require('../../models');
 
 const logout = (req, res) => {
   res.cookie('token', '', {

@@ -7,10 +7,10 @@ const {
   cookieJwtAuth,
   isAdmin,
   isSuperAdmin,
-} = require('../../middleware/auth');
+} = require('../../../middleware/auth');
 
-const validator = require('../../middleware/validator');
-const courseValidator = require('../../validations/course.validator');
+const validator = require('../../../middleware/validator');
+const courseAdminValidation = require('./course.admin.validation');
 
 router.get(
   '/purchases',
@@ -42,7 +42,7 @@ router.patch(
   '/:id',
   cookieJwtAuth,
   isAdmin,
-  validator(courseValidator.updateCourseSchema),
+  validator(courseAdminValidation.updateCourseSchema),
   courseAdminController.updateCourse
 );
 

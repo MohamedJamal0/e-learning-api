@@ -1,5 +1,5 @@
 const { UnauthenticatedError } = require('../errors');
-const { verifyToken } = require('../jwt');
+const { verifyToken } = require('../lib/jwt');
 
 const cookieJwtAuth = async (req, res, next) => {
   const token = req.cookies.token;

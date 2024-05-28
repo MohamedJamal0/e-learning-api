@@ -1,7 +1,7 @@
-const { BadRequestError } = require('../errors');
-const { Student } = require('../models');
+const { BadRequestError } = require('../../errors');
+const { Student } = require('../../models');
 
-const { generateToken, attachTokenToCookies } = require('../jwt');
+const { generateToken, attachTokenToCookies } = require('../../lib/jwt');
 const bcrypt = require('bcrypt');
 
 const studentSignup = async (req, res) => {

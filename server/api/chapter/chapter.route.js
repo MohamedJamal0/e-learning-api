@@ -3,16 +3,16 @@ const router = express.Router();
 
 const chapterController = require('./chapter.controller');
 
-const { isAdmin, isSuperAdmin, cookieJwtAuth } = require('../middleware/auth');
+const { isAdmin, isSuperAdmin, cookieJwtAuth } = require('../../middleware/auth');
 
-const validator = require('../middleware/validator');
-const { chapterValidator } = require('../validations');
+const validator = require('../../middleware/validator');
+const chapterValidation = require('./chapter.validation');
 
 router.get('/', cookieJwtAuth, isAdmin, chapterController.getChapters);
 
 router.post(
   '/',
-  validator(chapterValidator.createChapterSchema),
+  validator(chapterValidation.createChapterSchema),
   cookieJwtAuth,
   isAdmin,
   chapterController.createChapter
@@ -20,7 +20,7 @@ router.post(
 
 router.patch(
   '/:id',
-  validator(chapterValidator.updateChapterSchema),
+  validator(chapterValidation.updateChapterSchema),
   cookieJwtAuth,
   isAdmin,
   chapterController.updateChapter
@@ -42,7 +42,7 @@ router.delete(
 
 router.patch(
   '/:id/update_order',
-  validator(chapterValidator.updateChapterOrderSchema),
+  validator(chapterValidation.updateChapterOrderSchema),
   cookieJwtAuth,
   isAdmin,
   chapterController.updateChapterOrder

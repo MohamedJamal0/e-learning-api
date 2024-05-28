@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const validator = require('../middleware/validator');
-const { authValidator } = require('../validations');
+const validator = require('../../middleware/validator');
+const authValidation = require('./auth.validation');
 
 const {
   studentLogin,
@@ -13,31 +13,31 @@ const { adminLogin, createAdmin } = require('./auth.admin.controller');
 
 const { logout, getCurrentUser } = require('./auth.controller');
 
-const { cookieJwtAuth, isSuperAdmin } = require('../middleware/auth');
+const { cookieJwtAuth, isSuperAdmin } = require('../../middleware/auth');
 
 const passport = require('passport');
 
 router.post(
   '/signup',
-  validator(authValidator.studentSignupSchema),
+  validator(authValidation.studentSignupSchema),
   studentSignup
 );
 
 router.post(
   '/login',
-  validator(authValidator.studentLoginSchema),
+  validator(authValidation.studentLoginSchema),
   studentLogin
 );
 
 router.post(
   '/admin/login',
-  validator(authValidator.adminLoginSchema),
+  validator(authValidation.adminLoginSchema),
   adminLogin
 );
 
 router.post(
   '/admin/create',
-  validator(authValidator.createAdminSchema),
+  validator(authValidation.createAdminSchema),
   cookieJwtAuth,
   isSuperAdmin,
   createAdmin

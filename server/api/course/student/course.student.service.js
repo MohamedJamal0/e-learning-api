@@ -1,5 +1,5 @@
-const { Course, StudentCourse, Lecture, Student } = require('../../models');
-const { NotFoundError } = require('../../errors');
+const { Course, StudentCourse, Lecture, Student } = require('../../../models');
+const { NotFoundError } = require('../../../errors');
 const { default: mongoose } = require('mongoose');
 
 const getCourses = async () => {

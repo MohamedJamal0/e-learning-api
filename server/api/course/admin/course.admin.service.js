@@ -1,5 +1,5 @@
-const { Course, CoursePurchase, StudentCourse } = require('../../models');
-const { BadRequestError, NotFoundError } = require('../../errors');
+const { Course, CoursePurchase, StudentCourse } = require('../../../models');
+const { BadRequestError, NotFoundError } = require('../../../errors');
 
 const getCourses = async () => {
   const courses = await Course.aggregate([

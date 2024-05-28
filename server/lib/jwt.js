@@ -22,5 +22,4 @@ module.exports = {
   generateToken,
   verifyToken,
   attachTokenToCookies,
-
 };

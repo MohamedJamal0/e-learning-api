@@ -3,21 +3,21 @@ const router = express.Router();
 
 const lectureController = require('./lecture.controller');
 
-const validator = require('../middleware/validator');
-const { lectureValidator } = require('../validations');
+const validator = require('../../middleware/validator');
+const lectureValidation = require('./lecture.validation');
 
 const {
   isAdmin,
   cookieJwtAuth,
   isSuperAdmin,
   cookieJwtGetUser,
-} = require('../middleware/auth');
+} = require('../../middleware/auth');
 
 router.get('/', cookieJwtAuth, isAdmin, lectureController.getLectures);
 
 router.post(
   '/',
-  validator(lectureValidator.createLectureSchema),
+  validator(lectureValidation.createLectureSchema),
   cookieJwtAuth,
   isAdmin,
   lectureController.createLecture
@@ -25,7 +25,7 @@ router.post(
 
 router.patch(
   '/:id',
-  validator(lectureValidator.updateLectureSchema),
+  validator(lectureValidation.updateLectureSchema),
   cookieJwtAuth,
   isAdmin,
   lectureController.updateLecture
@@ -40,7 +40,7 @@ router.delete(
 
 router.patch(
   '/:id/update_order',
-  validator(lectureValidator.updateLectureOrderSchema),
+  validator(lectureValidation.updateLectureOrderSchema),
   cookieJwtAuth,
   isAdmin,
   lectureController.updateLectureOrder
