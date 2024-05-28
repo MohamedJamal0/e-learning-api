@@ -1,20 +1,9 @@
-const { BadRequestError } = require('../../errors');
-const { Student } = require('../../models');
-
 const { generateToken, attachTokenToCookies } = require('../../lib/jwt');
-const bcrypt = require('bcrypt');
+
+const authStudentService = require('./auth.student.service');
 
 const studentSignup = async (req, res) => {
-  const { email } = req.body;
-
-  const isEmailExist = await Student.findOne({ email });
-
-  if (isEmailExist)
-    return res.status(400).json({ error: 'Email already exist' });
-
-  const student = await Student.create({
-    ...req.body,
-  });
+  const student = await authStudentService.studentSignup(req.body);
 
   const token = generateToken({
     id: student._id,
@@ -30,16 +19,8 @@ const studentSignup = async (req, res) => {
   });
 };
 
-const studentLogin = async (req, res, next) => {
-  const { email, password } = req.body;
-
-  const student = await Student.findOne({ email });
-
-  if (!student) throw new BadRequestError('Invalid email or password');
-
-  const passMatch = await bcrypt.compare(password, student.password);
-
-  if (!passMatch) throw new BadRequestError('Invalid email or password');
+const studentLogin = async (req, res) => {
+  const student = await authStudentService.studentLogin(req.body);
 
   const token = generateToken({
     id: student._id,
@@ -60,21 +41,13 @@ const googleCallback = async (req, res) => {
     lastName: req.user.name.familyName,
     email: req.user.emails[0].value,
   };
-  const student = await Student.findOne({ email: user.email });
-  let token;
 
-  if (!student) {
-    const newStudent = await Student.create(user);
-    token = generateToken({
-      id: newStudent._id,
-      role: 'student',
-    });
-  } else {
-    token = generateToken({
-      id: student._id,
-      role: 'student',
-    });
-  }
+  const student = await authStudentService.googleCallback(user);
+
+  let token = generateToken({
+    id: student._id,
+    role: 'student',
+  });
 
   attachTokenToCookies(res, token);
 

@@ -1,18 +1,11 @@
-const { BadRequestError } = require('../../errors');
-const { Admin } = require('../../models');
-
 const { generateToken, attachTokenToCookies } = require('../../lib/jwt');
-const bcrypt = require('bcrypt');
 
-const adminLogin = async (req, res, next) => {
+const authAdminService = require('./auth.admin.service');
+
+const adminLogin = async (req, res) => {
   const { username, password } = req.body;
-  const admin = await Admin.findOne({ username });
 
-  if (!admin) throw new BadRequestError('Invalid username or password');
-
-  const passMatch = await bcrypt.compare(password, admin.password);
-
-  if (!passMatch) throw new BadRequestError('Invalid username or password');
+  const admin = authAdminService.loginAdmin({ username, password });
 
   const token = generateToken({
     id: admin._id,
@@ -29,17 +22,8 @@ const adminLogin = async (req, res, next) => {
 
 const createAdmin = async (req, res) => {
   const { username, password } = req.body;
-  const admin = await Admin.findOne({ username });
 
-  if (admin) throw new BadRequestError('Username already exist');
-
-  const hashPassword = await bcrypt.hash(password, 12);
-
-  const newAdmin = await Admin.create({
-    ...req.body,
-    password: hashPassword,
-    role: 'admin',
-  });
+  const newAdmin = await authAdminService.createAdmin({ username, password });
 
   res.status(201).json({
     id: newAdmin._id,
