@@ -1,6 +1,6 @@
 import Logo from './Logo';
 import { useAuthContext } from '../features/authentication/context/authContext';
-import Logout from '../features/authentication/components/Logout';
+
 import { Link } from 'react-router-dom';
 import SignUpModal from '../features/authentication/components/SignupModal';
 import LoginModal from '../features/authentication/components/LoginModal';
