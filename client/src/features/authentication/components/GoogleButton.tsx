@@ -1,7 +1,7 @@
 export default function GoogleButton() {
   return (
     <a
-      className="flex items-center gap-2 px-4 py-2 rounded-md  border  font-medium  hover:border-black hover:bg-slate-100 duration-200 "
+      className="flex items-center gap-2 px-4 py-2 rounded-md  border  font-medium  hover:border-black hover:bg-slate-100 duration-200 cursor-pointer "
       href={import.meta.env.VITE_GOOGLE_AUTH_URL}
     >
       <img

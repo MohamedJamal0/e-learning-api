@@ -19,6 +19,7 @@ export default function useLogin() {
       if (error.status === 400) {
         setIsError(error.message);
       } else {
+        console.log(error);
         setIsError('Failed to login');
       }
     } finally {

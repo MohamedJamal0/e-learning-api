@@ -2,6 +2,7 @@ import { secondsToHoursMinutes } from '../../../utils';
 import { CourseDetailsResponse } from '../types';
 import CourseChapters from './CourseChapters';
 import CoursePriceCard from './CoursePriceCard';
+import { calculateCourseDuration } from '../../../utils';
 
 interface CourseDetailsProps {
   course: CourseDetailsResponse;
@@ -12,19 +13,6 @@ export default function CourseDetails({ course }: CourseDetailsProps) {
     (acc, curr) => acc + curr.lectures.length,
     0
   );
-
-  const calculateChapterDuration = (
-    chapter: CourseDetailsResponse['chapters'][0]
-  ) => {
-    return chapter.lectures.reduce((acc, curr) => acc + curr.duration, 0);
-  };
-
-  const calculateCourseDuration = (course: CourseDetailsResponse) => {
-    return course.chapters.reduce(
-      (acc, curr) => acc + calculateChapterDuration(curr),
-      0
-    );
-  };
 
   const courseDuration = calculateCourseDuration(course);
 
@@ -43,8 +31,8 @@ export default function CourseDetails({ course }: CourseDetailsProps) {
               <span className="bg-blue-600 px-3 py-1 rounded bg-opacity-70">
                 {course?.level}
               </span>
-              <span className="bg-blue-600 px-3 py-1 rounded bg-opacity-70">
-                {hours}h {minutes}m
+              <span className="min-w-[60px] px-3 py-1 rounded bg-blue-600  bg-opacity-70">
+                {`${hours ? `${hours}h` : ''} ${minutes}m`}
               </span>
             </div>
           </div>
@@ -73,7 +61,7 @@ export default function CourseDetails({ course }: CourseDetailsProps) {
               <span> {numOfLectures} lectures</span>
             </div>
           </div>
-          <div className="border rounded-md sapce-y-2 shadow-md p-3">
+          <div className="border rounded-md space-y-2 shadow-md p-3">
             <CourseChapters
               courseTitle={course?.title}
               chapters={course?.chapters}

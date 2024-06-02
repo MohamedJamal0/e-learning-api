@@ -43,6 +43,13 @@ export default function PurchasesTable({ purchases }: PurchasesTableProps) {
             {purchases?.map((purchase) => (
               <PurchasesRow key={purchase._id} purchase={purchase} />
             ))}
+            {purchases.length === 0 && (
+              <tr>
+                <td colSpan={7} className="px-6 py-8 text-center">
+                  No purchases found
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

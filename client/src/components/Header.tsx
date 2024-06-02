@@ -4,12 +4,14 @@ import Logout from '../features/authentication/components/Logout';
 import { Link } from 'react-router-dom';
 import SignUpModal from '../features/authentication/components/SignupModal';
 import LoginModal from '../features/authentication/components/LoginModal';
+import { MdOutlineDashboard } from 'react-icons/md';
+import UserMenu from '../features/authentication/components/UserMenu';
 
 export default function Header() {
   const { user, isLoading } = useAuthContext();
 
   return (
-    <header className=" flex justify-between items-center gap-4 h-20 px-[3%] bg-white border-b border-gray-200">
+    <header className="flex justify-between items-center gap-4 h-20 px-[3%] bg-white shadow-sm">
       <Link to="/" className="shrink-0 ">
         <Logo />
       </Link>
@@ -18,16 +20,16 @@ export default function Header() {
         <div className="flex  items-center gap-4">
           <LoginModal />
           <SignUpModal />
-        </div>
-      )}
-      {user && (
-        <div className="flex gap-3">
-          <Link className=" text-indigo-700 font-medium" to="/my-courses">
-            My Courses
+          <Link
+            className="flex items-center gap-1 text-indigo-700 font-medium hover:text-orange-500 duration-300 "
+            to="/dashboard"
+          >
+            <MdOutlineDashboard className="w-4 h-4" />
+            Dashboard
           </Link>
-          <Logout />
         </div>
       )}
+      {user && <UserMenu />}
     </header>
   );
 }

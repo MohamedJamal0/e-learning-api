@@ -21,7 +21,7 @@ export default function CldImage({
   return (
     <img
       src={cld
-        .image(url)
+        .image(url?.split('/').slice(-2).join('/'))
         .resize(Resize.scale().width(width).height(height))
         .toURL()}
       {...props}

@@ -50,7 +50,7 @@ export default function CoursePriceCard({
           }
         />
         {!user && (
-          <p className="text-indigo-500 font-medium">Login to subscribe</p>
+          <p className="text-indigo-800 font-medium">Login to subscribe</p>
         )}
         {user && user?.role !== 'student' && (
           <p className="text-red-500 font-medium ">

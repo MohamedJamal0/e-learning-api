@@ -13,7 +13,12 @@ export default function UploadLectureVideo({
   return (
     <div className=" relative overflow-hidden">
       <UploadWidget
-        onUpload={(url) => updateLecture(lectureId, { videoUrl: url })}
+        onUpload={(file) =>
+          updateLecture(lectureId, {
+            videoUrl: file.url,
+            duration: file.duration,
+          })
+        }
         resourceType="video"
         maxFileSize={300 * 1024 * 1024}
       >

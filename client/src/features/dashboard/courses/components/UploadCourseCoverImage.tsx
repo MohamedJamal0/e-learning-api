@@ -14,11 +14,7 @@ export default function UploadCourseCoverImage({
       <div className="mb-2 font-medium">Course image</div>
       <div className="grid grid-cols-2 items-center gap-5">
         <div className="relative flex-1 aspect-[1.8] bg-slate-50">
-          <CldImage
-            url={currentCoverImage?.split('/').slice(-2).join('/')}
-            width={300}
-            height={200}
-          />
+          <CldImage url={currentCoverImage} width={300} height={200} />
         </div>
         <UploadWidget
           onUpload={onChange}

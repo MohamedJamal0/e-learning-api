@@ -1,4 +1,11 @@
 import { AxiosError } from 'axios';
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { CourseDetailsResponse } from '../features/courses/types';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export function dragELement<T>(array: T[], from: number, to: number) {
   const updatedArray = [...array];
@@ -40,3 +47,16 @@ export const removeEmptyValues = (object: any) =>
   Object.fromEntries(
     Object.entries(object).filter(([_, value]) => value !== '')
   );
+
+export const calculateChapterDuration = (
+  chapter: CourseDetailsResponse['chapters'][0]
+) => {
+  return chapter.lectures.reduce((acc, curr) => acc + curr.duration, 0);
+};
+
+export const calculateCourseDuration = (course: CourseDetailsResponse) => {
+  return course.chapters.reduce(
+    (acc, curr) => acc + calculateChapterDuration(curr),
+    0
+  );
+};

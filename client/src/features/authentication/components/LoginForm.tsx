@@ -25,7 +25,6 @@ export default function LoginForm() {
         name="email"
         label="Email"
         placeholder="Sign In with your Email"
-        className="mt-3"
       />
       <Input
         id="password"
@@ -33,7 +32,6 @@ export default function LoginForm() {
         name="password"
         label="Password"
         placeholder="Password"
-        className="mt-3"
       />
       {error && (
         <p className=" mt-2 border py-3 rounded-md bg-red-100 text-red-500 text-center">

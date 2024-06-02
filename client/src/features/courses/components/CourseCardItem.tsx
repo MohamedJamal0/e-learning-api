@@ -16,7 +16,7 @@ export default function CourseCardItem({ course }: CourseItemProps) {
         to={`/course/${title.split(' ').join('-')}`}
       >
         <CldImage
-          url={coverImage?.split('/').slice(-2).join('/')}
+          url={coverImage}
           width={300}
           height={200}
           className="rounded-t-md w-full h-40"

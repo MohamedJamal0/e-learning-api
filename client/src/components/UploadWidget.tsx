@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 interface UploadWidgetProps {
-  onUpload: (result: string) => void;
+  onUpload: (result: any) => void;
   children: React.ReactNode;
   [key: string]: any;
 }
@@ -38,7 +38,7 @@ export default function UploadWidget({
       },
       (error: any, result: any) => {
         if (!error && result && result.event === 'success') {
-          onUpload(result.info.url);
+          onUpload(result.info);
         }
       }
     );

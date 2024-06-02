@@ -5,7 +5,7 @@ import CourseDetails from './CourseDetails';
 export default function CourseProvider() {
   const { course, isLoading } = useCourse();
 
-  if (isLoading || !course) {
+  if (isLoading) {
     return <PageLoading />;
   }
 

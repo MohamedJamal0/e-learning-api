@@ -39,6 +39,13 @@ export default function CourseTable({ courses }: CourseTableProps) {
             {courses?.map((course) => (
               <CourseRow key={course._id} course={course} />
             ))}
+            {courses?.length === 0 && (
+              <tr>
+                <td colSpan={7} className="px-6 py-8 text-center">
+                  No courses found
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

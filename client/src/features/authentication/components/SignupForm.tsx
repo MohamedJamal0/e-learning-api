@@ -33,7 +33,6 @@ export default function SignUpForm() {
         name="lastName"
         label="Last Name"
         placeholder="Last Name"
-        className="mt-3"
       />
       <Input
         type="email"
@@ -41,7 +40,6 @@ export default function SignUpForm() {
         name="email"
         label="Email"
         placeholder="Sign Up with your Email"
-        className="mt-3"
       />
       <Input
         type="password"
@@ -49,7 +47,6 @@ export default function SignUpForm() {
         name="password"
         label="Password"
         placeholder="Password"
-        className="mt-3"
       />
       {error && (
         <p className=" mt-2 border py-3 rounded-md bg-red-100 text-red-500 text-center">
