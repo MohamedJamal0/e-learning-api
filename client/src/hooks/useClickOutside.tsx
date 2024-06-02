@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 const useClickOutside = (callback: () => void) => {
-  const ref = useRef<HTMLElement>();
+  const ref = useRef<HTMLButtonElement>();
 
   const handleClickOutside = (e: globalThis.MouseEvent) => {
     if (ref.current && !ref.current.contains(e.target as Node)) {

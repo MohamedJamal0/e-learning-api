@@ -46,7 +46,11 @@ const Open = ({ children, ...props }: MenuProps) => {
   const { handleClose, handleToggle } = useMenu();
   const { ref } = useClickOutSide(handleClose);
   return (
-    <button ref={ref} onClick={handleToggle} {...props}>
+    <button
+      ref={ref as React.RefObject<HTMLButtonElement>}
+      onClick={handleToggle}
+      {...props}
+    >
       {children}
     </button>
   );
