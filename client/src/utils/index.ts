@@ -60,3 +60,7 @@ export const calculateCourseDuration = (course: CourseDetailsResponse) => {
     0
   );
 };
+
+export const replaceHyphensWithSpaces = (s: string): string => {
+  return s.split('-').filter(Boolean).join(' ');
+};

@@ -1,17 +1,14 @@
 import { CourseDetailsResponse } from '../types';
 import { getCourse } from '../services';
 import { useErrorBoundary } from 'react-error-boundary';
-import { handleAxiosError } from '../../../utils';
+import { handleAxiosError, replaceHyphensWithSpaces } from '../../../utils';
 import useFetch from '../../../hooks/useFetch';
 import { useParams } from 'react-router-dom';
 
 export default function useCourse() {
   const { courseTitle } = useParams() as { courseTitle: string };
 
-  const _courseTitle = courseTitle
-    .split('-')
-    .filter((a) => a !== '-')
-    .join(' ');
+  const _courseTitle = replaceHyphensWithSpaces(courseTitle);
 
   const {
     data: course,
@@ -28,5 +25,5 @@ export default function useCourse() {
     showBoundary(handleAxiosError(error));
   }
 
-  return { course, isLoading };
+  return { course: course as CourseDetailsResponse, isLoading };
 }

@@ -15,5 +15,5 @@ export default function useCourses() {
     showBoundary(handleAxiosError(error));
   }
 
-  return { courses, isLoading };
+  return { courses: courses as CourseResponse[], isLoading };
 }

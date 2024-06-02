@@ -62,7 +62,7 @@ export default function CourseContent() {
 
   return (
     <div>
-      {/* <h1 className="mb-4 font-medium text-3xl ">{data?.title}</h1> */}
+      <h1 className="mb-4 font-medium text-3xl ">{data?.title}</h1>
       {content}
       <div className=" flex items-center justify-between flex-wrap gap-3 p-5 mt-8 mb-8 rounded-md bg-gray-300">
         <div className="flex items-center">

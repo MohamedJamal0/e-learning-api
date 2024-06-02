@@ -2,6 +2,7 @@ import { MdMenuOpen } from 'react-icons/md';
 import { useLearningSidebarToggle } from '../context/learningSidebarToggleContext';
 import Logo from '../../../components/Logo';
 import { Link, useParams } from 'react-router-dom';
+import { replaceHyphensWithSpaces } from '../../../utils';
 
 export default function LearningHeader() {
   const { toggleSidebar } = useLearningSidebarToggle();
@@ -13,7 +14,7 @@ export default function LearningHeader() {
         <Logo />
       </Link>
       <h1 className="absolute z-[-10] w-full  text-center text-xl font-medium ml-5 sm:text-3xl">
-        {courseTitle}
+        {replaceHyphensWithSpaces(courseTitle as string)}
       </h1>
       <div></div>
       <button

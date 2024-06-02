@@ -13,7 +13,6 @@ function useFetch<T>(
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        await new Promise((resolve) => setTimeout(resolve, 500));
         const { data: result } = await asyncFunc();
         setData(result);
       } catch (error: any) {
