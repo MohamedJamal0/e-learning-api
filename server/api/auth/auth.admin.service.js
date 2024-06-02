@@ -1,5 +1,7 @@
 const { Admin } = require('../../models');
-const { BadRequestError } = require('../../errors');
+const { BadRequestError, NotFoundError } = require('../../errors');
+
+const bcrypt = require('bcryptjs');
 
 const loginAdmin = async ({ username, password }) => {
   const admin = await Admin.findOne({ username });

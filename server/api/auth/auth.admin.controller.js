@@ -5,7 +5,7 @@ const authAdminService = require('./auth.admin.service');
 const adminLogin = async (req, res) => {
   const { username, password } = req.body;
 
-  const admin = authAdminService.loginAdmin({ username, password });
+  const admin = await authAdminService.loginAdmin({ username, password });
 
   const token = generateToken({
     id: admin._id,
